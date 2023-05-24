@@ -1,0 +1,65 @@
+---
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      debug:
+        type: choice
+        description: Debug mode
+        required: false
+        options:
+          - "true"
+          - "false"
+
+# Allow one concurrent
+concurrency:
+  group: ${{ format('{0}-{1}-{2}-{3}-{4}', github.workflow, github.event_name, github.ref, github.base_ref, github.head_ref) }}
+  cancel-in-progress: true
+
+env:
+  DEBUG: ${{ inputs.debug || secrets.ACTIONS_RUNNER_DEBUG || vars.ACTIONS_RUNNER_DEBUG || secrets.ACTIONS_STEP_DEBUG || vars.ACTIONS_STEP_DEBUG || false }}
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⤵️ Checkout
+        uses: actions/checkout@v3
+
+      - name: 🤖 Bot Details Action (default)
+        id: bot-details-default
+        uses: ./
+
+      - name: 📤 outputs (default)
+        run: |
+          echo "ID: ${{ steps.bot-details-default.outputs.id }}"
+          echo "Slug name: ${{ steps.bot-details-default.outputs.slug }}"
+          echo "Display name: ${{ steps.bot-details-default.outputs.name }}"
+          echo "Email: ${{ steps.bot-details-default.outputs.email }}"
+          echo "Name Email: ${{ steps.bot-details-default.outputs.name-email }}"
+          echo "HTML URL: ${{ steps.bot-details-default.outputs.html-url }}"
+          echo "API URL: ${{ steps.bot-details-default.outputs.api-url }}"
+
+      - name: 🤖 Bot Details Action (named)
+        id: bot-details-named
+        uses: ./
+        with:
+          bot-slug-name: raven-actions
+
+      - name: 📤 outputs (named)
+        run: |
+          echo "ID: ${{ steps.bot-details-named.outputs.id }}"
+          echo "Slug name: ${{ steps.bot-details-named.outputs.slug }}"
+          echo "Display name: ${{ steps.bot-details-named.outputs.name }}"
+          echo "Email: ${{ steps.bot-details-named.outputs.email }}"
+          echo "Name Email: ${{ steps.bot-details-named.outputs.name-email }}"
+          echo "HTML URL: ${{ steps.bot-details-named.outputs.html-url }}"
+          echo "API URL: ${{ steps.bot-details-named.outputs.api-url }}"

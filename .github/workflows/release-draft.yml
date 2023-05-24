@@ -1,0 +1,12 @@
+---
+name: Draft Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  draft-release:
+    uses: raven-actions/.workflows/.github/workflows/__release-draft.yml@main
+    secrets: inherit

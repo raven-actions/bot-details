@@ -1,0 +1,86 @@
+# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+---
+name: Bot Details
+description: 🤖 Get basic bot (GitHub App) details like name, email, id, ... with GitHub format to use in another action for automation like git push, open PR, etc., and set author/committer in the proper form.
+author: Dariusz Porowski
+branding:
+  icon: user # https://feathericons.com/
+  color: gray-dark
+
+inputs:
+  bot-slug-name:
+    description: Bot slug name (GitHub App name)
+    required: false
+    default: github-actions
+  github-token:
+    description: GitHub token
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  id:
+    description: Bot id
+    value: ${{ steps.bot-details.outputs.id }}
+  slug:
+    description: Bot slug name
+    value: ${{ steps.bot-details.outputs.slug }}
+  name:
+    description: Bot name
+    value: ${{ steps.bot-details.outputs.name }}
+  email:
+    description: Bot email
+    value: ${{ steps.bot-details.outputs.email }}
+  name-email:
+    description: Bot name and email
+    value: ${{ steps.bot-details.outputs.name_email }}
+  html-url:
+    description: Bot html url
+    value: ${{ steps.bot-details.outputs.html_url }}
+  api-url:
+    description: Bot api url
+    value: ${{ steps.bot-details.outputs.api_url }}
+
+runs:
+  using: composite
+  steps:
+    - name: Get bot details
+      uses: actions/github-script@v6
+      id: bot-details
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const botSlugName = core.getInput('bot_slug_name', {required: true})
+          const botName = `${botSlugName}[bot]`
+
+          const { data } = await github.rest.users.getByUsername({
+            username: botName
+          })
+
+          const botId = data.id
+          const botEmail= `${botId}+${botName}@users.noreply.github.com`
+          const botNameEmail = `${botName} <${botEmail}>`
+          const botHtmlUrl = data.html_url
+          const botApiUrl = data.url
+
+          core.info(`botId: ${botId}`)
+          core.setOutput('id', botId)
+
+          core.info(`botSlugName: ${botSlugName}`)
+          core.setOutput('slug', botSlugName)
+
+          core.info(`botName: ${botName}`)
+          core.setOutput('name', `${botName}`)
+
+          core.info(`botEmail: ${botEmail}`)
+          core.setOutput('email', `${botEmail}`)
+
+          core.info(`botNameEmail: ${botNameEmail}`)
+          core.setOutput('name_email', `${botNameEmail}`)
+
+          core.info(`botHtmlUrl: ${botHtmlUrl}`)
+          core.setOutput('html_url', `${botHtmlUrl}`)
+
+          core.info(`botApiUrl: ${botApiUrl}`)
+          core.setOutput('api_url', `${botApiUrl}`)
+      env:
+        INPUT_BOT_SLUG_NAME: ${{ inputs.bot-slug-name }}
