@@ -1,0 +1,20 @@
+---
+name: Publish Release
+
+on:
+  # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
+  release:
+    types:
+      - published
+  workflow_dispatch:
+    inputs:
+      tag-name:
+        description: Tag name that the major tag will point to
+        required: true
+
+jobs:
+  publish-release:
+    uses: raven-actions/.workflows/.github/workflows/__release-publish.yml@main
+    secrets: inherit
+    with:
+      tag-name: ${{ github.event.inputs.tag-name || github.event.release.tag_name }}
