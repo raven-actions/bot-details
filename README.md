@@ -7,7 +7,7 @@
 
 ---
 
-This [GitHub Action](https://github.com/features/actions) allows you to quickly and easily get basic bot (GitHub App) details like name, email, id, ... with GitHub format to use in another action for automation like git push, open PR, etc., and set author/committer in the proper form.
+This [GitHub Action](https://github.com/features/actions) allows you to quickly and easily get bot (GitHub App) basic details like name, email, id, ... with GitHub format to use in another action for automation like git push, open PR, etc., and set author/committer in the proper form.
 
 - Action is platform-independent and tested on all the latest GitHub-hosted runners (`ubuntu-latest`, `macos-latest`, `windows-latest`).
 
