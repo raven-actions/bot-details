@@ -1,7 +1,7 @@
 # https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
 ---
 name: Bot Details
-description: 🤖 Get bot basic details with proper GitHub format to use in subsequence action for automation like git push, PR, and more.
+description: 🤖 Get bot details (name, email, author/committer) in a proper format for the subsequence steps like git, PR, and more.
 author: Dariusz Porowski
 branding:
   icon: user # https://feathericons.com/
