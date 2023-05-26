@@ -1,8 +1,9 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-forms.json
 # https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
 ---
-name: 🚀 Feature request
+name: ✨ Feature request
 description: Suggest an idea for this project 🏖
-title: "🚀 [feature]: "
+title: '✨ [feature]: '
 labels: [enhancement]
 body:
   - type: markdown
@@ -11,7 +12,7 @@ body:
   - type: textarea
     id: description
     attributes:
-      label: 🚀 Feature description
+      label: ✨ Feature description
       description: A clear and concise description of the feature proposal.
       placeholder: A clear and concise description of the feature proposal.
     validations:

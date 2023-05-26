@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://json.schemastore.org/pre-commit-config.json
 ---
 default_install_hook_types:
   - pre-commit
@@ -22,12 +23,12 @@ repos:
         args: [--allow-multiple-documents]
         exclude: package-lock.json
       - id: check-json
-        exclude: "package-lock.json|.vscode/.*"
+        exclude: 'package-lock.json|.vscode/.*'
       - id: pretty-format-json
         args:
-          - "--autofix"
-          - "--no-sort-keys"
-        exclude: "package-lock.json|.vscode/.*"
+          - '--autofix'
+          - '--no-sort-keys'
+        exclude: 'package-lock.json|.vscode/.*'
       - id: end-of-file-fixer
       - id: no-commit-to-branch
       - id: check-executables-have-shebangs
@@ -45,7 +46,7 @@ repos:
       - id: gitleaks
         args:
           - --config
-          - ".github/linters/.gitleaks.toml"
+          - '.github/linters/.gitleaks.toml'
 
   # - repo: https://github.com/rhysd/actionlint
   #   rev: v1.6.24

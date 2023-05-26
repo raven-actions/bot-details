@@ -4,27 +4,70 @@
   "git.autofetch": true,
   "git.fetchOnPull": true,
   "git.pruneOnFetch": true,
+  "git.pullBeforeCheckout": true,
   "git.branchProtection": [
     "main",
     "master",
   ],
+  "git.mergeEditor": true,
+  "git.enableSmartCommit": true,
+  // github
+  "github.branchProtection": true,
+  "githubPullRequests.showPullRequestNumberInTree": true,
   // files
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
   "files.associations": {
     "CODEOWNERS": "ignore",
+    "*.env*": "properties"
   },
   // editor
   "editor.formatOnSave": true,
+  "editor.inlineSuggest.enabled": true,
+  "editor.detectIndentation": true,
   // markdown
   "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true
   },
+  "markdown.extension.toc.slugifyMode": "github",
   "markdown.extension.toc.levels": "2..6",
-  "markdown.extension.toc.unorderedList.marker": "-",
   "markdown.extension.toc.updateOnSave": true,
+  "markdown.extension.toc.unorderedList.marker": "-",
   "markdown.extension.orderedList.marker": "one",
+  "markdown.extension.tableFormatter.delimiterRowNoPadding": true,
+  "markdown.extension.tableFormatter.normalizeIndentation": true,
   "markdown.extension.print.absoluteImgPath": true,
-  "markdown.extension.toc.slugifyMode": "github"
+  "markdownlint.config": {
+    "extends": "./.github/linters/.markdownlint.yml",
+  },
+  // yaml
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.tabSize": 2
+  },
+  "yaml.format.singleQuote": true,
+  // "yaml.format.proseWrap": "always",
+  "yaml.format.printWidth": 120,
+  "yaml.schemaStore.enable": true,
+  // json
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "json.schemas": [
+    {
+      "fileMatch": [
+        "devContainer.json"
+      ],
+      "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json"
+    }
+  ],
+  // others
+  "dotenv.enableAutocloaking": false,
+  "prettier.configPath": ".prettierrc.yml",
+  "eslint.format.enable": true
 }

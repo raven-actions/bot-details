@@ -7,7 +7,7 @@
 
 ---
 
-This [GitHub Action](https://github.com/features/actions) allows you to quickly and easily get bot (GitHub App) basic details like name, email, id, ... with GitHub format to use in another action for automation like git push, open PR, etc., and set author/committer in the proper form.
+This [GitHub Action](https://github.com/features/actions) allows you to quickly and easily get bot (GitHub App) basic details like name, email, author/committer, ... in a proper GitHub format to use in the subsequence steps for automation like git commit/push, open PR, etc.
 
 - Action is platform-independent and tested on all the latest GitHub-hosted runners (`ubuntu-latest`, `macos-latest`, `windows-latest`).
 
@@ -15,6 +15,9 @@ This [GitHub Action](https://github.com/features/actions) allows you to quickly 
 
 - [🛠️ Usage](#️-usage)
   - [Quick Start](#quick-start)
+  - [Consume methods](#consume-methods)
+    - [Action's output](#actions-output)
+    - [Environment variables](#environment-variables)
   - [Example usage scenarios](#example-usage-scenarios)
     - [Git commit](#git-commit)
     - [Pull Request](#pull-request)
@@ -33,8 +36,6 @@ Just place in your GitHub workflow steps:
 - name: Bot Details
   id: bot-details
   uses: raven-actions/bot-details@v1
-  with:
-    bot-slug-name: my-gh-app # (optional) if not specified then default one is 'github-actions'
 
 - name: Bot Details outputs
   run: |
@@ -57,14 +58,83 @@ Example output with default settings:
 - HTML URL: `https://github.com/apps/github-actions`
 - API URL: `https://api.github.com/users/github-actions%5Bbot%5D`
 
+### Consume methods
+
+#### Action's output
+
+Use the action's output in the subsequence steps
+
+```yaml
+- name: Bot Details
+  id: bot-details
+  uses: raven-actions/bot-details@v1
+  with:
+    bot-slug-name: dependabot # (optional) if not specified then default one is 'github-actions'
+
+- name: Bot Details outputs
+  run: |
+    echo "ID: ${{ steps.bot-details.outputs.id }}"
+    echo "Slug name: ${{ steps.bot-details.outputs.slug }}"
+    echo "Display name: ${{ steps.bot-details.outputs.name }}"
+    echo "Email: ${{ steps.bot-details.outputs.email }}"
+    echo "Name Email: ${{ steps.bot-details.outputs.name-email }}"
+    echo "HTML URL: ${{ steps.bot-details.outputs.html-url }}"
+    echo "API URL: ${{ steps.bot-details.outputs.api-url }}"
+```
+
+#### Environment variables
+
+Use environment variables in the subsequence steps.
+
+```yaml
+- name: Bot Details
+  uses: raven-actions/bot-details@v1
+  with:
+    bot-slug-name: my-gh-app # (optional) if not specified then default one is 'github-actions'
+
+- name: Bot Details outputs
+  run: |
+    echo "ID: ${{ env.BOT_ID }}"
+    echo "Slug name: ${{ env.BOT_SLUG }}"
+    echo "Display name: ${{ env.BOT_NAME }}"
+    echo "Email: ${{ env.BOT_EMAIL }}"
+    echo "Name Email: ${{ env.BOT_NAME_EMAIL }}"
+    echo "HTML URL: ${{ env.BOT_HTML_URL }}"
+    echo "API URL: ${{ env.BOT_API_URL }}"
+```
+
+Use environment variables with custom environment prefix in the subsequence steps.
+
+> Environment prefix will be upper-cased and striped from any special characters.
+> A double underscore `__` is placed between environment prefix and env name.
+
+```yaml
+- name: Bot Details
+  uses: raven-actions/bot-details@v1
+  with:
+    env-prefix: myEnvPrefix # (optional) if not specified then no prefix
+
+- name: Bot Details outputs
+  run: |
+    echo "ID: ${{ env.MYENVPREFIX__BOT_ID }}"
+    echo "Slug name: ${{ env.MYENVPREFIX__BOT_SLUG }}"
+    echo "Display name: ${{ env.MYENVPREFIX__BOT_NAME }}"
+    echo "Email: ${{ env.MYENVPREFIX__BOT_EMAIL }}"
+    echo "Name Email: ${{ env.MYENVPREFIX__BOT_NAME_EMAIL }}"
+    echo "HTML URL: ${{ env.MYENVPREFIX__BOT_HTML_URL }}"
+    echo "API URL: ${{ env.MYENVPREFIX__BOT_API_URL }}"
+```
+
 ### Example usage scenarios
 
-Below examples based on existing actions.
+Below are examples based on existing actions.
 
 #### Git commit
 
+Example with [Git Auto Commit](https://github.com/marketplace/actions/git-auto-commit) action.
+
 ```yaml
-- name: git-auto-commit Action
+- name: Git Auto Commit
   uses: stefanzweifel/git-auto-commit-action@v4
   with:
     commit_user_name: ${{ steps.bot-details.outputs.name }}
@@ -74,8 +144,10 @@ Below examples based on existing actions.
 
 #### Pull Request
 
+Example with [Create Pull Request](https://github.com/marketplace/actions/create-pull-request) action.
+
 ```yaml
-- name: Create Pull Request Action
+- name: Create Pull Request
   uses: peter-evans/create-pull-request@v5
   with:
     committer: ${{ steps.bot-details.outputs.name-email }}
@@ -84,10 +156,11 @@ Below examples based on existing actions.
 
 ## 📥 Inputs
 
-|      Name       | Required |   Type   |     Default      | Description                     |
-|:---------------:|:--------:|:--------:|:----------------:|:--------------------------------|
-| `bot-slug-name` |  false   | `string` | `github-actions` | Bot slug name (GitHub App name) |
-| `github-token`  |  false   | `string` |  `github.token`  | GitHub token                    |
+|      Name       | Required |   Type   |     Default      | Description                                |
+|:---------------:|:--------:|:--------:|:----------------:|:-------------------------------------------|
+| `bot-slug-name` |  false   | `string` | `github-actions` | Bot slug name (GitHub App name)            |
+|  `env-prefix`   |  false   | `string` |    *not set*     | Prefix for environment variables           |
+| `github-token`  |  false   | `string` |  `github.token`  | GitHub token to use for API authentication |
 
 ## 📤 Outputs
 
