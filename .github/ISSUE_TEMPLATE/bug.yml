@@ -1,8 +1,9 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-issue-forms.json
 # https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/syntax-for-githubs-form-schema
 ---
 name: 🐛 Bug Report
 description: If something isn't working 🔧
-title: "🐛 [bug]: "
+title: '🐛 [bug]: '
 labels: [bug]
 body:
   - type: markdown
