@@ -39,7 +39,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: ⤵️ Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 🤖 Bot Details Action (default)
         id: bot-details-default
