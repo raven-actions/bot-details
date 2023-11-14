@@ -47,7 +47,7 @@ runs:
   using: composite
   steps:
     - name: Get bot details
-      uses: actions/github-script@v6
+      uses: actions/github-script@v7
       id: bot-details
       with:
         github-token: ${{ inputs.github-token || github.token }}
