@@ -12,6 +12,10 @@ inputs:
     description: Bot slug name (GitHub App name)
     required: false
     default: github-actions
+  set-env:
+    description: "Save action's output also as environment variables"
+    type: bool
+    default: true
   env-prefix:
     description: Prefix for environment variables
     required: false
@@ -52,53 +56,50 @@ runs:
       with:
         github-token: ${{ inputs.github-token || github.token }}
         script: |
+          // Define constants for bot details
           const botSlugName = core.getInput('bot_slug_name', {required: false}) || 'github-actions'
           const botName = `${botSlugName}[bot]`
-
+          
+          // Get environment variables
           let envPrefix = core.getInput('env_prefix', { required: false })
-          if (envPrefix) {
+          const setEnv = core.getBooleanInput('set_env') || false
+          
+          // Format environment prefix if required
+          if (setEnv && envPrefix) {
             envPrefix = envPrefix.replace(/[^a-z0-9]/gi, '').toUpperCase()
             envPrefix = `${envPrefix}__`
+            core.debug(`envPrefix: ${envPrefix}`)
           }
-          core.debug(`envPrefix: ${envPrefix}`)
-
-          const { data } = await github.rest.users.getByUsername({
-            username: botName
-          })
-
+          
+          // Fetch bot details from GitHub API
+          const { data } = await github.rest.users.getByUsername({ username: botName })
+          
+          // Extract bot details
           const botId = data.id
           const botEmail = `${botId}+${botName}@users.noreply.github.com`
           const botNameEmail = `${botName} <${botEmail}>`
           const botHtmlUrl = data.html_url
           const botApiUrl = data.url
+          
+          // Function to set output and export variable if required
+          const setOutputAndExportVariable = (name, value) => {
+            core.debug(`${name}: ${value}`)
+            core.setOutput(name, value)
+            if (setEnv) {
+              core.exportVariable(`${envPrefix}BOT_${name.toUpperCase()}`, value)
+            }
+          }
+          
+          // Set outputs and export variables
+          setOutputAndExportVariable('id', botId)
+          setOutputAndExportVariable('slug', botSlugName)
+          setOutputAndExportVariable('name', botName)
+          setOutputAndExportVariable('email', botEmail)
+          setOutputAndExportVariable('name_email', botNameEmail)
+          setOutputAndExportVariable('html_url', botHtmlUrl)
+          setOutputAndExportVariable('api_url', botApiUrl)
 
-          core.debug(`botId: ${botId}`)
-          core.setOutput('id', botId)
-          core.exportVariable(`${envPrefix}BOT_ID`, botId)
-
-          core.debug(`botSlugName: ${botSlugName}`)
-          core.setOutput('slug', botSlugName)
-          core.exportVariable(`${envPrefix}BOT_SLUG`, botSlugName)
-
-          core.debug(`botName: ${botName}`)
-          core.setOutput('name', `${botName}`)
-          core.exportVariable(`${envPrefix}BOT_NAME`, botName)
-
-          core.debug(`botEmail: ${botEmail}`)
-          core.setOutput('email', `${botEmail}`)
-          core.exportVariable(`${envPrefix}BOT_EMAIL`, botEmail)
-
-          core.debug(`botNameEmail: ${botNameEmail}`)
-          core.setOutput('name_email', `${botNameEmail}`)
-          core.exportVariable(`${envPrefix}BOT_NAME_EMAIL`, botNameEmail)
-
-          core.debug(`botHtmlUrl: ${botHtmlUrl}`)
-          core.setOutput('html_url', `${botHtmlUrl}`)
-          core.exportVariable(`${envPrefix}BOT_HTML_URL`, botHtmlUrl)
-
-          core.debug(`botApiUrl: ${botApiUrl}`)
-          core.setOutput('api_url', `${botApiUrl}`)
-          core.exportVariable(`${envPrefix}BOT_API_URL`, botApiUrl)
       env:
         INPUT_BOT_SLUG_NAME: ${{ inputs.bot-slug-name }}
+        INPUT_SET_ENV: ${{ inputs.set-env }}
         INPUT_ENV_PREFIX: ${{ inputs.env-prefix }}
