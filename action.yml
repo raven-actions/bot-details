@@ -13,9 +13,10 @@ inputs:
     required: false
     default: github-actions
   set-env:
-    description: "Save action's output also as environment variables"
-    type: bool
-    default: true
+    description: "Save these outputs also as environment variables"
+    required: false
+    type: string
+    default: "id, slug, name, email, name-email, html-url, api-url"
   env-prefix:
     description: Prefix for environment variables
     required: false
@@ -57,15 +58,13 @@ runs:
         github-token: ${{ inputs.github-token || github.token }}
         script: |
           // Define constants for bot details
-          const botSlugName = core.getInput('bot_slug_name', {required: false}) || 'github-actions'
+          const botSlugName = core.getInput('bot_slug_name') || 'github-actions'
           const botName = `${botSlugName}[bot]`
-          
-          // Get environment variables
-          let envPrefix = core.getInput('env_prefix', { required: false })
-          const setEnv = core.getBooleanInput('set_env') || false
+          const setEnv = core.getInput('set_env').replace(/\s/g, '').split(",") || []
+          let envPrefix = core.getInput('env_prefix')
           
           // Format environment prefix if required
-          if (setEnv && envPrefix) {
+          if (setEnv.length && envPrefix) {
             envPrefix = envPrefix.replace(/[^a-z0-9]/gi, '').toUpperCase()
             envPrefix = `${envPrefix}__`
             core.debug(`envPrefix: ${envPrefix}`)
@@ -85,7 +84,7 @@ runs:
           const setOutputAndExportVariable = (name, value) => {
             core.debug(`${name}: ${value}`)
             core.setOutput(name, value)
-            if (setEnv) {
+            if (name of setEnv || name.replace(/_/g, '-') of setEnv) {
               core.exportVariable(`${envPrefix}BOT_${name.toUpperCase()}`, value)
             }
           }
@@ -101,5 +100,5 @@ runs:
 
       env:
         INPUT_BOT_SLUG_NAME: ${{ inputs.bot-slug-name }}
-        INPUT_SET_ENV: ${{ inputs.set-env }}
-        INPUT_ENV_PREFIX: ${{ inputs.env-prefix }}
+        INPUT_SET_ENV:       ${{ inputs.set-env }}
+        INPUT_ENV_PREFIX:    ${{ inputs.env-prefix }}
