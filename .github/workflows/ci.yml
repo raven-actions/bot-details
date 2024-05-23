@@ -11,12 +11,10 @@ on:
   workflow_dispatch:
     inputs:
       debug:
-        type: choice
         description: Debug mode
         required: false
-        options:
-          - 'true'
-          - 'false'
+        type: boolean
+        default: true
 
 # Allow one concurrent
 concurrency:
