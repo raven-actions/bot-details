@@ -6,8 +6,7 @@
   "git.pruneOnFetch": true,
   "git.pullBeforeCheckout": true,
   "git.branchProtection": [
-    "main",
-    "master",
+    "main"
   ],
   "git.mergeEditor": true,
   "git.enableSmartCommit": true,
@@ -19,37 +18,36 @@
   "files.insertFinalNewline": true,
   "files.associations": {
     "CODEOWNERS": "ignore",
-    "*.env*": "properties"
+    "**/.github/workflows/*.y*ml": "yaml",
+    "*.env*": "properties",
+    ".lycheeignore": "ignore"
   },
   // editor
-  "editor.formatOnSave": true,
   "editor.inlineSuggest.enabled": true,
   "editor.detectIndentation": true,
+  "editor.formatOnSave": true,
   // markdown
   "[markdown]": {
-    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true
   },
-  "markdown.extension.toc.slugifyMode": "github",
+  "markdownlint.config": {
+    "extends": "./.markdownlint.yml"
+  },
   "markdown.extension.toc.levels": "2..6",
   "markdown.extension.toc.updateOnSave": true,
+  "markdown.extension.tableFormatter.normalizeIndentation": true,
+  "markdown.extension.tableFormatter.delimiterRowNoPadding": true,
+  "markdown.extension.toc.slugifyMode": "github",
   "markdown.extension.toc.unorderedList.marker": "-",
   "markdown.extension.orderedList.marker": "one",
-  "markdown.extension.tableFormatter.delimiterRowNoPadding": true,
-  "markdown.extension.tableFormatter.normalizeIndentation": true,
   "markdown.extension.print.absoluteImgPath": true,
-  "markdownlint.config": {
-    "extends": "./.github/linters/.markdownlint.yml",
-  },
   // yaml
   "[yaml]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml",
-    "editor.tabSize": 2
+    "editor.defaultFormatter": "redhat.vscode-yaml"
   },
-  "yaml.format.singleQuote": true,
-  // "yaml.format.proseWrap": "always",
-  "yaml.format.printWidth": 120,
+  "yaml.format.singleQuote": false,
   "yaml.schemaStore.enable": true,
   // json
   "[json]": {
@@ -69,5 +67,12 @@
   // others
   "dotenv.enableAutocloaking": false,
   "prettier.configPath": ".prettierrc.yml",
-  "eslint.format.enable": true
+  "eslint.format.enable": true,
+  // copilot
+  "chat.mcp.discovery.enabled": true,
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "text": "Use the Conventional Commits specification to create commit message with scope to keep consistent commit history. Do not use file extension. Must be less than 100 characters."
+    }
+  ]
 }
