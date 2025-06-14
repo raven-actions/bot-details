@@ -135,7 +135,7 @@ Example with [Git Auto Commit](https://github.com/marketplace/actions/git-auto-c
 
 ```yaml
 - name: Git Auto Commit
-  uses: stefanzweifel/git-auto-commit-action@v4
+  uses: stefanzweifel/git-auto-commit-action@v6
   with:
     commit_user_name: ${{ steps.bot-details.outputs.name }}
     commit_user_email: ${{ steps.bot-details.outputs.email }}
@@ -148,7 +148,7 @@ Example with [Create Pull Request](https://github.com/marketplace/actions/create
 
 ```yaml
 - name: Create Pull Request
-  uses: peter-evans/create-pull-request@v5
+  uses: peter-evans/create-pull-request@v7
   with:
     committer: ${{ steps.bot-details.outputs.name-email }}
     author: ${{ steps.bot-details.outputs.name-email }}

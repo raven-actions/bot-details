@@ -1,4 +1,4 @@
-# https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+# https://docs.github.com/en/actions/sharing-automations/creating-actions/metadata-syntax-for-github-actions
 ---
 name: Bot Details
 description: 🤖 Get bot details (name, email, author/committer) in a proper format for the subsequence steps like git, PR, and more.
@@ -14,8 +14,7 @@ inputs:
     default: github-actions
   set-env:
     description: "Save action's output also as environment variables"
-    type: bool
-    default: true
+    default: "true"
   env-prefix:
     description: Prefix for environment variables
     required: false
@@ -51,61 +50,15 @@ runs:
   using: composite
   steps:
     - name: Get bot details
-      uses: actions/github-script@v7
+      uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
       id: bot-details
       with:
-        github-token: ${{ inputs.github-token || github.token }}
+        github-token: ${{ inputs.github-token }}
         script: |
-          const botSlugName = core.getInput('bot_slug_name', {required: false}) || 'github-actions'
-          const botName = `${botSlugName}[bot]`
-
-          let envPrefix = core.getInput('env_prefix', { required: false })
-          let setEnv = core.getBooleanInput('set_env') || false
-          if (setEnv) {
-            if (envPrefix) {
-              envPrefix = envPrefix.replace(/[^a-z0-9]/gi, '').toUpperCase()
-              envPrefix = `${envPrefix}__`
-            }
-            core.debug(`envPrefix: ${envPrefix}`)
-          }
-
-          const { data } = await github.rest.users.getByUsername({
-            username: botName
-          })
-
-          const botId = data.id
-          const botEmail = `${botId}+${botName}@users.noreply.github.com`
-          const botNameEmail = `${botName} <${botEmail}>`
-          const botHtmlUrl = data.html_url
-          const botApiUrl = data.url
-
-          core.debug(`botId: ${botId}`)
-          core.setOutput('id', botId)
-          setEnv && core.exportVariable(`${envPrefix}BOT_ID`, botId)
-
-          core.debug(`botSlugName: ${botSlugName}`)
-          core.setOutput('slug', botSlugName)
-          setEnv && core.exportVariable(`${envPrefix}BOT_SLUG`, botSlugName)
-
-          core.debug(`botName: ${botName}`)
-          core.setOutput('name', `${botName}`)
-          setEnv && core.exportVariable(`${envPrefix}BOT_NAME`, botName)
-
-          core.debug(`botEmail: ${botEmail}`)
-          core.setOutput('email', `${botEmail}`)
-          setEnv && core.exportVariable(`${envPrefix}BOT_EMAIL`, botEmail)
-
-          core.debug(`botNameEmail: ${botNameEmail}`)
-          core.setOutput('name_email', `${botNameEmail}`)
-          setEnv && core.exportVariable(`${envPrefix}BOT_NAME_EMAIL`, botNameEmail)
-
-          core.debug(`botHtmlUrl: ${botHtmlUrl}`)
-          core.setOutput('html_url', `${botHtmlUrl}`)
-          setEnv && core.exportVariable(`${envPrefix}BOT_HTML_URL`, botHtmlUrl)
-
-          core.debug(`botApiUrl: ${botApiUrl}`)
-          core.setOutput('api_url', `${botApiUrl}`)
-          setEnv && core.exportVariable(`${envPrefix}BOT_API_URL`, botApiUrl)
+          const path = require('path')
+          const actionPath = path.join(process.env.GITHUB_ACTION_PATH, 'index.cjs')
+          const script = require(actionPath)
+          await script({ github, core })
       env:
         INPUT_BOT_SLUG_NAME: ${{ inputs.bot-slug-name }}
         INPUT_SET_ENV: ${{ inputs.set-env }}
