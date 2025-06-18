@@ -1,0 +1,6 @@
+{
+  "main": "composite",
+  "files": [
+    "index.cjs"
+  ]
+}
