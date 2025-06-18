@@ -15,7 +15,39 @@ updates:
       prefix: ci
       include: scope
     labels:
-      - 'deps/github-actions'
+      - "deps/github-actions"
     groups:
       all:
-        patterns: ['*']
+        patterns: ["*"]
+
+  - package-ecosystem: devcontainers
+    directory: /
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: build
+      include: scope
+    labels:
+      - "deps/devcontainer"
+    groups:
+      all:
+        patterns: ["*"]
+
+  - package-ecosystem: npm
+    directories:
+      - "/**/*"
+    schedule:
+      interval: daily
+    commit-message:
+      prefix: build
+      prefix-development: chore
+      include: scope
+    labels:
+      - "deps/js-ts"
+    ignore:
+      - dependency-name: "@types/node"
+        update-types:
+          - "version-update:semver-major"
+    groups:
+      all:
+        patterns: ["*"]

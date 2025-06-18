@@ -14,3 +14,5 @@
 *.jpeg binary
 *.png binary
 *.vsdx binary
+
+dist/** -diff linguist-generated=true

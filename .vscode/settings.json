@@ -10,6 +10,7 @@
   ],
   "git.mergeEditor": true,
   "git.enableSmartCommit": true,
+  "git.replaceTagsWhenPull": true,
   // github
   "github.branchProtection": true,
   "githubPullRequests.showPullRequestNumberInTree": true,
@@ -20,7 +21,12 @@
     "CODEOWNERS": "ignore",
     "**/.github/workflows/*.y*ml": "yaml",
     "*.env*": "properties",
-    ".lycheeignore": "ignore"
+    ".lycheeignore": "ignore",
+    "tsconfig.json": "jsonc",
+    "*.tsconfig.json": "jsonc",
+    "tsconfig.*.json": "jsonc",
+    "project.json": "jsonc",
+    "*.tsbuildinfo": "jsonc"
   },
   // editor
   "editor.inlineSuggest.enabled": true,
@@ -32,9 +38,7 @@
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true
   },
-  "markdownlint.config": {
-    "extends": "./.markdownlint.yml"
-  },
+  "markdownlint.configFile": "./.github/linters/.markdownlint.yml",
   "markdown.extension.toc.levels": "2..6",
   "markdown.extension.toc.updateOnSave": true,
   "markdown.extension.tableFormatter.normalizeIndentation": true,
@@ -59,20 +63,56 @@
   "json.schemas": [
     {
       "fileMatch": [
-        "devContainer.json"
+        "devcontainer.json"
       ],
       "url": "https://raw.githubusercontent.com/devcontainers/spec/main/schemas/devContainer.schema.json"
     }
   ],
   // others
   "dotenv.enableAutocloaking": false,
-  "prettier.configPath": ".prettierrc.yml",
   "eslint.format.enable": true,
+  // lint
+  "cSpell.import": [
+    "./.github/linters/.cspell.yml"
+  ],
+  "prettier.configPath": "./.github/linters/.prettierrc.yml",
+  "linter.linters": {
+    "yamllint": {
+      "configFiles": [
+        "./.github/linters/.yamllint.yml"
+      ]
+    },
+    "markdownlint": {
+      "configFiles": [
+        "./.github/linters/.markdownlint.yml"
+      ]
+    },
+    "shellcheck": {
+      "configFiles": [
+        "./.github/linters/.shellcheckrc"
+      ],
+      "command": [
+        "shellcheck",
+        "--format",
+        "json",
+        "--enable",
+        "all",
+        "--rcfile",
+        "$config",
+        "-"
+      ]
+    }
+  },
+  "shellcheck.customArgs": [
+    "--rcfile",
+    "./.github/linters/.shellcheckrc"
+  ],
+  "shellcheck.useWorkspaceRootAsCwd": true,
   // copilot
   "chat.mcp.discovery.enabled": true,
   "github.copilot.chat.commitMessageGeneration.instructions": [
     {
       "text": "Use the Conventional Commits specification to create commit message with scope to keep consistent commit history. Do not use file extension. Must be less than 100 characters."
     }
-  ]
+  ],
 }

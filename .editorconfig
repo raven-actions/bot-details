@@ -8,17 +8,26 @@ insert_final_newline = true
 indent_style = space
 indent_size = 2
 
-[*.{go,mod}]
+[*.{go,mod,tsv}]
 indent_style = tab
 
 [*.md]
 indent_size = unset
 
-[*.py]
-indent_size = 4
-
-[*.ps1]
+[*.{cpp,cs,gradle,java,kt,py,rs,ps1}]
 indent_size = 4
 
 [*.{cmd,bat}]
 end_of_line = crlf
+
+[Makefile]
+indent_style = tab
+
+[**/node_modules/**]
+ignore = true
+
+[**/.venv/**]
+ignore = true
+
+[**/dist/**]
+ignore = true
