@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD041 -->
 ## 💌 Description
 
 <!-- Add a more detailed description of the changes if needed. -->
