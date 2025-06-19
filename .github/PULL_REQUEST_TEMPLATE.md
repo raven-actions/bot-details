@@ -8,7 +8,7 @@
 <!-- If your PR refers to a related issue, link it here. -->
 Fixes: #
 
-## 🔄️ Type of change
+## 📚 Type of change
 
 <!-- Mark with an `x` all the checkboxes that apply (like `[x]`) -->
 
@@ -17,12 +17,12 @@ Fixes: #
 - [ ] 🥂 Improvement (non-breaking change which improves an existing feature)
 - [ ] ✨ New feature (non-breaking change which adds functionality)
 - [ ] 💥 Breaking change (fix or feature that would cause existing functionality to change)
-- [ ] 🔒 Security fix
+- [ ] 🚨 Security fix
 - [ ] ⬆️ Dependencies update
 
-## ☑️ Checklist
+## ✔️ Checklist
 
-<!-- Mark with an `x` all the checkboxes (like `[x]`) -->
+<!-- Mark with an `x` all the checkboxes that apply (like `[x]`) -->
 
-- [ ] I've read the [`Code of Conduct`](https://github.com/raven-actions/bot-details/blob/main/.github/CODE_OF_CONDUCT.md) document.
-- [ ] I've read the [`Contributing`](https://github.com/raven-actions/bot-details/blob/main/.github/CONTRIBUTING.md) guide.
+- [ ] I've read the [`Code of Conduct`](https://github.com/raven-actions/.workflows/blob/main/.github/CODE_OF_CONDUCT.md) document.
+- [ ] I've read the [`Contributing`](https://github.com/raven-actions/.workflows/blob/main/.github/CONTRIBUTING.md) guide.

@@ -115,4 +115,6 @@
       "text": "Use the Conventional Commits specification to create commit message with scope to keep consistent commit history. Do not use file extension. Must be less than 100 characters."
     }
   ],
+  // misc
+  "sarif-viewer.connectToGithubCodeScanning": "on"
 }
