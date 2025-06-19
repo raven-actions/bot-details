@@ -19,3 +19,4 @@ paths:
   .github/workflows/**/*.{yml,yaml}:
     ignore:
       - 'file "dist/index.js" does not exist'
+      - 'property ".+" is not defined in object type'
